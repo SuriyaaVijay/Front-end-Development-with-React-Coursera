@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Menu from './MenuComponent';
+import DishDetail from './DishDetailComponent';
 import Home from './HomeComponent';
 import Header from './HeaderComponent';
+import About from './AboutComponent';
 import Contact from './ContactComponent';
 import Footer from './FooterComponent';
 import { COMMENTS } from '../shared/comments';
@@ -9,6 +11,7 @@ import { PROMOTIONS } from '../shared/promotions';
 import { LEADERS } from '../shared/leaders';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { DISHES } from '../shared/dishes';
+
 
 class Main extends Component {
 
@@ -39,7 +42,17 @@ class Main extends Component {
           />
       );
     }
-
+    const Aboutus = () => {
+      return(
+        <About leaders={this.state.leaders} />
+      )
+    }
+    const DishWithId = ({match}) => {
+      return(
+          <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+            comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+      );
+    };
     return (
       <div>
         <Header />
@@ -48,8 +61,9 @@ class Main extends Component {
           <Route path='/home' exact element={<HomePage/>} />
           <Route path='/menu' exact element={<MenU/>} />
           <Route path='/contactus' exact element={<Contact/>}/>
-          <Route path='/home' element={<Navigate replace to="/home" /> } /> 
-          
+          <Route path='/aboutus' exact element={<Aboutus/>}/>
+          <Route path='/home' exact element={<Navigate replace to="/home" /> } /> 
+          <Route path='/menu/:dishId' exact element={DishWithId} />                                                     
         </Routes>
         <Footer />
       </div>
